@@ -121,17 +121,16 @@ bool DimKeyEquality::operator()(DimKey d1, DimKey d2) const {
          compare_uf(d1.dim1_ext_uf, d2.dim1_ext_uf) && compare_uf(d1.dim2_ext_uf, d2.dim2_ext_uf);
 }
 
-std::unordered_map<DimKey, const DimensionNode*, DimKeyHasher, DimKeyEquality>
-    Dimension::op_dim_map;
+std::unordered_map<DimKey, Dimension, DimKeyHasher, DimKeyEquality> Dimension::op_dim_map;
 
 Dimension Dimension::get_or_create_dimension(const DimKey& key) {
   auto it = op_dim_map.find(key);
   if (it != op_dim_map.end()) {
-    return GetRef<Dimension>(it->second);
+    return it->second;
   } else {
     auto name = op2str(key.op) + std::to_string(op_dim_map.size());
     auto dim = DimensionNode::make(name, DimensionNode::kRangeDim);
-    op_dim_map[key] = dim.operator->();
+    op_dim_map[key] = dim;
     return dim;
   }
 }
