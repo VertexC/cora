@@ -100,7 +100,7 @@ class DimKeyEquality {
 
 class Dimension : public runtime::ObjectRef {
  public:
-  static std::unordered_map<DimKey, const DimensionNode*, DimKeyHasher, DimKeyEquality> op_dim_map;
+  static std::unordered_map<DimKey, Dimension, DimKeyHasher, DimKeyEquality> op_dim_map;
 
   static Dimension get_or_create_dimension(const DimKey& key);
 
